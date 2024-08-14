@@ -14,6 +14,7 @@ mob_db = open(mob_dp_path)
 prt_fild = open(prt_fild_path)
 
 mob_list = yaml.load(mob_db, Loader=yaml.CLoader)['Body']
+filtered_mob_list = list(filter(lambda mob: 'BaseExp' in mob and 'Drops' in mob, mob_list))
 
 new_file = []
 for line in prt_fild:
@@ -21,11 +22,11 @@ for line in prt_fild:
     new_line = line.split('\t')
 
     if args.level_range >= 0:
-        mob_level = next(filter(lambda mob: mob['Name'] == new_line[2], mob_list))['Level']
-        mobs_in_level_range = list(filter(lambda mob: mob_level - args.level_range <= mob['Level'] <= mob_level + args.level_range, mob_list))
+        mob_level = next(filter(lambda mob: mob['Name'] == new_line[2], filtered_mob_list))['Level']
+        mobs_in_level_range = list(filter(lambda mob: mob_level - args.level_range <= mob['Level'] <= mob_level + args.level_range, filtered_mob_list))
         random_mob = random.choice(mobs_in_level_range)
     else:
-        random_mob = random.choice(mob_list)
+        random_mob = random.choice(filtered_mob_list)
 
     new_line[2] = random_mob['Name']
     id_part = new_line[3].split(',')
