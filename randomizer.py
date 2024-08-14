@@ -4,7 +4,7 @@ import random
 
 parser = argparse.ArgumentParser(prog='Ragnarok Online Randomizer')
 parser.add_argument('-p', '--path')
-parser.add_argument('--same-level', action='store_true')
+parser.add_argument('--level-range', default=-1, type=int) # a negative level range means randomizing completely
 args = parser.parse_args()
 
 rathena_path = args.path # pass rAthena path through the command line
@@ -20,10 +20,10 @@ for line in prt_fild:
     if line.startswith('//') or line == '\n': continue
     new_line = line.split('\t')
 
-    if args.same_level:
+    if args.level_range >= 0:
         mob_level = next(filter(lambda mob: mob['Name'] == new_line[2], mob_list))['Level']
-        mobs_with_same_level = list(filter(lambda mob: mob['Level'] == mob_level, mob_list))
-        random_mob = random.choice(mobs_with_same_level)
+        mobs_in_level_range = list(filter(lambda mob: mob_level - args.level_range <= mob['Level'] <= mob_level + args.level_range, mob_list))
+        random_mob = random.choice(mobs_in_level_range)
     else:
         random_mob = random.choice(mob_list)
 
