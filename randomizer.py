@@ -1,14 +1,13 @@
-import argparse
 import yaml # pyyaml dependency
+import json
 from mobs import randomize_mobs
 from drops import randomize_drops
 
-parser = argparse.ArgumentParser(prog='Ragnarok Online Randomizer')
-parser.add_argument('-p', '--path')
-parser.add_argument('--level-range', default=-1, type=int) # a negative level range means randomizing completely
-args = parser.parse_args()
+config_file = open('./config.json')
+config = json.load(config_file)
+config_file.close()
 
-rathena_path = args.path # pass rAthena path through the command line
+rathena_path = config['rathenaPath']
 mob_dp_path = f'{rathena_path}/db/pre-re/mob_db.yml'
 mob_db_file = open(mob_dp_path)
 mob_db = yaml.load(mob_db_file, Loader=yaml.CLoader)
@@ -24,5 +23,5 @@ item_db_equip_file.close()
 item_db_etc_file.close()
 item_db_usable_file.close()
 
-# randomize_mobs(rathena_path, mob_db, args.level_range)
-randomize_drops(rathena_path, mob_db, item_db)
+randomize_mobs(rathena_path, mob_db, config['mobs'])
+randomize_drops(rathena_path, mob_db, item_db, config['drops'])

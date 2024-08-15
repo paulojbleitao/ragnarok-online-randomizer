@@ -1,7 +1,7 @@
 import random
 import yaml
 
-def randomize_drops(rathena_path, mob_db, item_db):
+def randomize_drops(rathena_path, mob_db, item_db, config):
     mob_list = mob_db['Body']
     every_item = item_db['equip'] + item_db['etc'] + item_db['usable']
     for mob in mob_list:

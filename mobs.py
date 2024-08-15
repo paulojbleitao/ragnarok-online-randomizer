@@ -2,7 +2,9 @@ import random
 from util import navigate_directories
 from pathlib import Path
 
-def randomize_mob_file(filepath, mob_list, filtered_mob_list, level_range):
+def randomize_mob_file(filepath, mob_list, filtered_mob_list, config):
+    level_range = config['levelRange']
+
     file = open(filepath)
     new_file = []
     for line in file:

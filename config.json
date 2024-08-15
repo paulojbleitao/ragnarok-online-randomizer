@@ -1,0 +1,10 @@
+{
+    "rathenaPath": "path/to/rAthena",
+    "mobs": {
+        "levelRange": -1
+    },
+    "drops": {
+        "keepCards": false,
+        "sameCategory": false
+    }
+}
