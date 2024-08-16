@@ -1,7 +1,8 @@
 {
     "rathenaPath": "path/to/rAthena",
     "mobs": {
-        "levelRange": -1
+        "levelRange": -1,
+        "shuffleMVPs": false
     },
     "drops": {
         "keepCards": false,
