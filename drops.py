@@ -2,10 +2,11 @@ import random
 import yaml
 
 def randomize_drops(rathena_path, mob_db, item_db, config):
-    keep_cards = config['keepCards']
-    same_category = config['sameCategory']
+    version = 'pre-re' if config['preRe'] else 're'
+    keep_cards = config['drops']['keepCards']
+    same_category = config['drops']['sameCategory']
 
-    item_dict = { item['AegisName']: item | { 'category': category } for category in item_db for item in item_db[category] }
+    item_dict = { item['AegisName'].lower(): item | { 'category': category } for category in item_db for item in item_db[category] }
 
     mob_list = mob_db['Body']
     every_item = item_db['equip'] + item_db['usable'] + item_db['etc']
@@ -17,7 +18,7 @@ def randomize_drops(rathena_path, mob_db, item_db, config):
         if 'Drops' in mob:
             for drop in mob['Drops']:
                 suitable_items = every_item
-                item_category = item_dict[drop['Item']]['category']
+                item_category = item_dict[drop['Item'].lower()]['category']
                 if keep_cards and drop['Item'].endswith('_Card'):
                     continue
                 if same_category and keep_cards and item_category == 'etc':
@@ -28,6 +29,6 @@ def randomize_drops(rathena_path, mob_db, item_db, config):
                     suitable_items = every_item_but_cards
                 drop['Item'] = random.choice(suitable_items)['AegisName']
     mob_db['Body'] = mob_list
-    mob_db_file = open(f'{rathena_path}/db/pre-re/mob_db.yml', 'w')
+    mob_db_file = open(f'{rathena_path}/db/{version}/mob_db.yml', 'w')
     print(yaml.dump(mob_db, Dumper=yaml.CDumper), file=mob_db_file)
     mob_db_file.close()

@@ -1,5 +1,6 @@
 {
     "rathenaPath": "path/to/rAthena",
+    "preRe": true,
     "mobs": {
         "levelRange": -1,
         "shuffleMVPs": false
