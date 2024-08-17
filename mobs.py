@@ -5,7 +5,7 @@ from pathlib import Path
 def is_mvp(mob_entry):
     return 'MvpExp' in mob_entry and mob_entry['MvpExp'] > 0
 
-def randomize_mob_file(filepath, mob_list, filtered_mob_list, config):
+def randomize_mob_file(filepath, mob_dict, filtered_mob_list, config):
     level_range = config['levelRange']
     # maybe find a better name for this? shuffleMVPs means that MVPs will only be randomized between MVPs
     shuffle_mvps = config['shuffleMVPs']
@@ -22,7 +22,7 @@ def randomize_mob_file(filepath, mob_list, filtered_mob_list, config):
         suitable_mobs = filtered_mob_list
 
         mob_id = int(new_line[3].split(',')[0])
-        mob_entry = next(filter(lambda mob: mob['Id'] == mob_id, mob_list))
+        mob_entry = mob_dict[mob_id]
         if level_range >= 0:
             mob_level = mob_entry['Level']
             suitable_mobs = list(filter(lambda mob: mob_level - level_range <= mob['Level'] <= mob_level + level_range, suitable_mobs))
@@ -53,7 +53,8 @@ def randomize_mob_file(filepath, mob_list, filtered_mob_list, config):
 
 def randomize_mobs(rathena_path, mob_db, config):
     mob_list = mob_db['Body']
+    mob_dict = { mob['Id']: mob for mob in mob_list }
     filtered_mob_list = list(filter(lambda mob: 'BaseExp' in mob and 'Drops' in mob, mob_list))
     mob_files = navigate_directories(Path(f'{rathena_path}/npc/pre-re/mobs/'), [])
     for file in mob_files:
-        randomize_mob_file(file, mob_list, filtered_mob_list, config)
+        randomize_mob_file(file, mob_dict, filtered_mob_list, config)
