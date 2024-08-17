@@ -19,7 +19,7 @@ def randomize_mob_file(filepath, mob_dict, filtered_mob_list, config):
         if line.startswith('//') or line == '\n': continue
         # keep other lines as they are (e.g. script lines)
         # the regex matches the acceptable line format
-        if not re.fullmatch(r'[\w_]+(fild|dun|in)?[\d,]+\t[\w ]+\t[\w ]+\t[\d,]+', line): new_file.append(line); continue
+        if not re.fullmatch(r"[\w_]+(fild|dun|in)?[\d,]+\t[\w ]+\t[\w '.-]+\t[\d,]+\n", line): new_file.append(line); continue
 
         suitable_mobs = filtered_mob_list
 
