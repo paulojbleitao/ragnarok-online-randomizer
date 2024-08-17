@@ -1,11 +1,14 @@
 import yaml # pyyaml dependency
 import json
+import random
 from mobs import randomize_mobs
 from drops import randomize_drops
 
 config_file = open('./config.json')
 config = json.load(config_file)
 config_file.close()
+
+random.seed(config['seed'])
 
 rathena_path = config['rathenaPath']
 version = 'pre-re' if config['preRe'] else 're'
