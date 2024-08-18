@@ -4,8 +4,39 @@ A randomizer for [rAthena](https://github.com/rathena/rathena) servers.
 
 ---
 
-Currently, the randomization covers only monster spawns, which means any monster can spawn in any field or dungeon (e.g. an Ice Titan spawning in Prontera fields). It is done by modifying the monster spawn tables and swapping a monster for another. For example, the prt\_fild08 map spawns 70 Porings. By swapping the Poring entry with another monster's, like a Dokebi, prt\_fild08 now spawns 70 Dokebis instead.
+### Running
 
-An option to keep the randomized monsters to a certain level range is also available, to avoid situations like having those Porings being swapped for a much stronger monster such as Baphomets. By setting this argument to an integer, only monsters with levels within this integer will be randomized (by setting the range to 10, a level 50 monster will only be replaced by monsters with levels between 40 and 60).
+You will need `python` and `pip`.
 
-Monster drops randomization is also planned. Other forms of randomization may be coming too.
+First install the dependencies with `pip install -r requirements.txt`. Then do `python randomizer.py` after editing `config.json` with your preferred settings.
+
+### Settings
+
+The `config.json` file contains the settings used by the randomizer. Below is the specification of each setting.
+
+```json
+// config.json
+{
+    "rathenaPath": "path/to/rAthena",
+    "seed": null,
+    "preRe": true,
+    "mobs": {
+        "levelRange": -1,
+        "shuffleMVPs": false
+    },
+    "drops": {
+        "keepCards": false,
+        "sameCategory": false
+    }
+}
+```
+
+| Setting | Type | Description |
+| ------- | ---- | ----------- |
+| rathenaPath | string | The absolute path to your rAthena directory. |
+| seed | string, int, float or null | The randomizer's seed; set it as null for a random seed. |
+| preRe | boolean | True for pre-renewal servers, false for renewal servers. |
+| mobs: levelRange | int | When levelRange is set, a mob will only be replaced by mobs within a certain rage. For example, with a levelRange of 10, a level 40 mob will only be replaced by mobs with levels between 30 and 50.  |
+| mobs: shuffleMVPs | boolean | If true, removes MVPs from the general randomization pool and randomizes MVPs only between themselves. For example, a Poring won't be able to be replaced with a Baphomet, but a Baphomet could be replaced by a Valkyrie.  |
+| drops: keepCards | boolean | If true, doesn't randomize card drops and doesn't add them to the randomization pool. |
+| drops: sameCategory | boolean | If true, keeps the item randomizations to their own categories. For example, equipments will only be replaced by equipments. |
